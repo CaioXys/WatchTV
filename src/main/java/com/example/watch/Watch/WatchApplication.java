@@ -1,24 +1,24 @@
 package com.example.watch.Watch;
 
-import com.example.watch.Watch.dto.OmdBDTO;
-import com.example.watch.Watch.service.ApiService;
+
+import com.example.watch.Watch.main.Principal;
+import com.example.watch.Watch.services.ApiService;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class WatchApplication {
+public class WatchApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(WatchApplication.class, args);
+	}
 
-		ApiService apiService = new ApiService();
-		try {
-			OmdBDTO omdBDTO = apiService.omdB("");
-			System.out.println(omdBDTO.getTitle());
+		@Override
+		public void run(String... args) throws Exception {
+			Principal principal = new Principal();
+			principal.exibeMenu();
+		}
 
-		} catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 
 }
