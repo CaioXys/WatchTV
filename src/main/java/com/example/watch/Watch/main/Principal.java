@@ -14,13 +14,14 @@ public class Principal {
     private ApiService apiService = new ApiService();
     private ConverteDados conversor = new ConverteDados();
 
+    private final String OMDBAPIKEY = System.getenv("APIKEY_OMDB");
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
-    private final String APIKEY = "&apikey=2f5aff76";
+    private final String API = "&apikey=" + OMDBAPIKEY;
 
     public void exibeMenu() {
         System.out.print("Digite o nome do Filme: ");
         var titulo = scanner.nextLine();
-        var json = apiService.obterDados(ENDERECO + titulo.replace(" ", "+") + APIKEY);
+        var json = apiService.obterDados(ENDERECO + titulo.replace(" ", "+") + API);
         DadosFilmes dadosFilmes = conversor.obterDados(json, DadosFilmes.class);
         System.out.println(dadosFilmes);
         System.out.println("Quer procurar outro filme (S/N)?");
@@ -31,7 +32,5 @@ public class Principal {
         } else {
             System.out.println("Saindo!");
         }
-
     }
-
 }
