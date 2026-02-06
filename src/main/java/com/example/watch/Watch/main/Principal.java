@@ -7,9 +7,6 @@ import com.example.watch.Watch.services.ConverteDados;
 import java.util.Scanner;
 
 public class Principal {
-
-    private String resp;
-
     private Scanner scanner = new Scanner(System.in);
     private ApiService apiService = new ApiService();
     private ConverteDados conversor = new ConverteDados();
@@ -25,12 +22,25 @@ public class Principal {
         DadosFilmes dadosFilmes = conversor.obterDados(json, DadosFilmes.class);
         System.out.println(dadosFilmes);
         System.out.println("Quer procurar outro filme (S/N)?");
-        resp = scanner.nextLine();
+        String resp = scanner.nextLine();
 
         if (resp.equals("S")) {
             exibeMenu();
-        } else {
+        } else if (resp.equals("N")){
             System.out.println("Saindo!");
+        } else {
+            System.out.println("Escolha entre (S/N)");
+            escolha();
+        }
+        scanner.close();
+    }
+
+    public void escolha() {
+        System.out.println("Quer procurar outro filme (S/N)?");
+        String resp = scanner.nextLine();
+
+        if (!resp.equals("S") && !resp.equals("N")) {
+            exibeMenu();
         }
     }
 }
