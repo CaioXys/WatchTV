@@ -11,23 +11,18 @@ public class ApiService {
     public String obterDados(String endereco) {
 
             HttpClient client = HttpClient.newHttpClient();
-
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(endereco)).build();
-
             HttpResponse<String> response = null;
 
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
         } catch (IOException e) {
             System.out.println(e.getMessage());
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
         return response.body();
-
     }
 
 }
