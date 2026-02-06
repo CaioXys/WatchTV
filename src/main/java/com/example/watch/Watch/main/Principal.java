@@ -20,7 +20,19 @@ public class Principal {
         var titulo = scanner.nextLine();
         var json = apiService.obterDados(ENDERECO + titulo.replace(" ", "+") + API);
         DadosFilmes dadosFilmes = conversor.obterDados(json, DadosFilmes.class);
-        System.out.println(dadosFilmes);
+
+        if (dadosFilmes.titulo() != null) {
+            System.out.println("------------------------------");
+            System.out.println("Título: " + dadosFilmes.titulo());
+            System.out.println("Gênero: " + dadosFilmes.genero().split(",")[0].trim()); // .split(",")[0].trim() pega o primeiro
+            System.out.println("Data de lançamento: " + dadosFilmes.lancamento());
+            System.out.println("Duração: " + dadosFilmes.duracao());
+            System.out.println("Avaliação: " + dadosFilmes.avaliacao());
+            System.out.println("------------------------------");
+        } else {
+            System.out.println("Esse filme não pode ser encontrado");
+        }
+
         System.out.println("Quer procurar outro filme (S/N)?");
         String resp = scanner.nextLine();
 
@@ -30,12 +42,12 @@ public class Principal {
             System.out.println("Saindo!");
         } else {
             System.out.println("Escolha entre (S/N)");
-            escolha();
+            verificaResp();
         }
         scanner.close();
     }
 
-    public void escolha() {
+    public void verificaResp() {
         System.out.println("Quer procurar outro filme (S/N)?");
         String resp = scanner.nextLine();
 
