@@ -13,7 +13,6 @@ import java.time.LocalDate;
 public class Filme {
 
     private String titulo;
-    private String ano;
     private String genero;
     private LocalDate lancamento;
     private String duracao;
