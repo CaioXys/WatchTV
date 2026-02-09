@@ -1,9 +1,12 @@
 package com.example.watch.Watch.main;
 
 import com.example.watch.Watch.model.DadosFilmes;
+import com.example.watch.Watch.model.Genero;
+import com.example.watch.Watch.model.GeneroDTO;
 import com.example.watch.Watch.services.ApiService;
 import com.example.watch.Watch.services.ConverteDados;
 
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Principal {
@@ -16,18 +19,23 @@ public class Principal {
     private final String API = "&apikey=" + OMDBAPIKEY;
 
     public void exibeMenu() {
+
         System.out.print("Digite o nome do Filme: ");
         var titulo = scanner.nextLine();
         var json = apiService.obterDados(ENDERECO + titulo.replace(" ", "+") + API);
         DadosFilmes dadosFilmes = conversor.obterDados(json, DadosFilmes.class);
 
+        String generoIngles = dadosFilmes.genero().split(",")[0].trim();
+        Genero genero = Genero.fromApi(generoIngles);
+
         if (dadosFilmes.titulo() != null) {
             System.out.println("------------------------------");
             System.out.println("Título: " + dadosFilmes.titulo());
-            System.out.println("Gênero: " + dadosFilmes.genero().split(",")[0].trim()); // .split(",")[0].trim() pega o primeiro
+            System.out.println("Gênero: " + genero.getGeneroPtBr()); // .split(",")[0].trim() pega o primeiro
             System.out.println("Data de lançamento: " + dadosFilmes.lancamento());
             System.out.println("Duração: " + dadosFilmes.duracao());
             System.out.println("Avaliação: " + dadosFilmes.avaliacao());
+            System.out.println("Sinopse: " + dadosFilmes.sinopse());
             System.out.println("------------------------------");
         } else {
             System.out.println("Esse filme não pode ser encontrado");
