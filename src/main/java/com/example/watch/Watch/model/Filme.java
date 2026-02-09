@@ -32,6 +32,5 @@ public class Filme {
         } catch (DateTimeException ex) {
             this.lancamento = null;
         }
-
     }
 }
