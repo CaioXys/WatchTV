@@ -1,4 +1,4 @@
-package com.example.watch.Watch.model;
+package com.example.watch.Watch.dto;
 
 import lombok.Getter;
 
