@@ -1,10 +1,8 @@
 package com.example.watch.Watch.model;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 public enum Genero {
 
