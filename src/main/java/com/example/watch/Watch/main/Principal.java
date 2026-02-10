@@ -3,7 +3,6 @@ package com.example.watch.Watch.main;
 import com.example.watch.Watch.model.DadosFilmes;
 import com.example.watch.Watch.model.Genero;
 import com.example.watch.Watch.services.ApiService;
-import com.example.watch.Watch.services.ConsultaGemini;
 import com.example.watch.Watch.services.ConverteDados;
 
 import java.util.Scanner;
@@ -26,19 +25,22 @@ public class Principal {
         String generoIngles = dadosFilmes.genero().split(",")[0].trim(); // .split(",")[0].trim() pega o primeiro
         Genero genero = Genero.fromApi(generoIngles);
 
-        if (dadosFilmes.titulo() != null) {
-            System.out.println("------------------------------");
-            System.out.println("Título: " + dadosFilmes.titulo());
-            System.out.println("Gênero: " + genero.getGeneroPtBr());
-            System.out.println("Data de lançamento: " + dadosFilmes.lancamento());
-            System.out.println("Duração: " + dadosFilmes.duracao());
-            System.out.println("Avaliação: " + dadosFilmes.avaliacao());
-            System.out.println("Sinopse: " + ConsultaGemini.obterTraducao(dadosFilmes.sinopse()).trim());
-            System.out.println("------------------------------");
-        } else {
-            System.out.println("Esse filme não pode ser encontrado");
-        }
+            if (dadosFilmes.titulo() != null) {
+                System.out.println("------------------------------");
+                System.out.println("Título: " + dadosFilmes.titulo());
+                System.out.println("Gênero: " + genero.getGeneroPtBr());
+                System.out.println("Data de lançamento: " + dadosFilmes.lancamento());
+                System.out.println("Duração: " + dadosFilmes.duracao());
+                System.out.println("Avaliação: " + dadosFilmes.avaliacao());
+//                System.out.println("Sinopse: " + ConsultaGemini.obterTraducao(dadosFilmes.sinopse()).trim());
+                System.out.println("------------------------------");
+            } else if (dadosFilmes.resposta().equals("False")) {
+                System.out.println("Esse filme não pode ser encontrado");
+            }
+        escolhaLista();
+    }
 
+    public void verificaResp() {
         System.out.println("Quer procurar outro filme (S/N)?");
         String resp = scanner.nextLine();
 
@@ -49,15 +51,19 @@ public class Principal {
         } else {
             verificaResp();
         }
-        scanner.close();
     }
 
-    public void verificaResp() {
-        System.out.println("Quer procurar outro filme (S/N)?");
+    public void escolhaLista() {
+        System.out.println("Você quer adicionar esse filme a sua lista? (S/N)");
         String resp = scanner.nextLine();
-
-        if (!resp.equals("S") && !resp.equals("N")) {
-            exibeMenu();
+        if (resp.equals("S")) {
+            System.out.println("Filme adicionado na lista!");
+            verificaResp();
+        } else if (resp.equals("N")) {
+            System.out.println("O filme não foi adicionado!");
+            verificaResp();
+        } else {
+            escolhaLista();
         }
     }
 }
