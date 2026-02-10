@@ -3,6 +3,7 @@ package com.example.watch.Watch.main;
 import com.example.watch.Watch.model.DadosFilmes;
 import com.example.watch.Watch.model.Genero;
 import com.example.watch.Watch.services.ApiService;
+import com.example.watch.Watch.services.ConsultaGemini;
 import com.example.watch.Watch.services.ConverteDados;
 
 import java.util.Scanner;
@@ -32,7 +33,7 @@ public class Principal {
             System.out.println("Data de lançamento: " + dadosFilmes.lancamento());
             System.out.println("Duração: " + dadosFilmes.duracao());
             System.out.println("Avaliação: " + dadosFilmes.avaliacao());
-            System.out.println("Sinopse: " + dadosFilmes.sinopse());
+            System.out.println("Sinopse: " + ConsultaGemini.obterTraducao(dadosFilmes.sinopse()).trim());
             System.out.println("------------------------------");
         } else {
             System.out.println("Esse filme não pode ser encontrado");
