@@ -1,5 +1,6 @@
 package com.example.watch.Watch.model;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,8 +12,8 @@ import java.time.LocalDate;
 @Setter
 @ToString
 public class Filme {
-
     private String titulo;
+    private String descricao;
     private String genero;
     private LocalDate lancamento;
     private String duracao;
