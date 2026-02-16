@@ -1,12 +1,18 @@
 package com.example.watch.Watch.main;
 
 import com.example.watch.Watch.model.DadosFilmes;
+import com.example.watch.Watch.model.Filme;
 import com.example.watch.Watch.model.Genero;
+import com.example.watch.Watch.model.Lista;
+import com.example.watch.Watch.repository.ListaRepository;
 import com.example.watch.Watch.services.ApiService;
+import com.example.watch.Watch.services.ConsultaGemini;
 import com.example.watch.Watch.services.ConverteDados;
+import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
+@Component
 public class Principal {
     private Scanner scanner = new Scanner(System.in);
     private ApiService apiService = new ApiService();
@@ -15,6 +21,11 @@ public class Principal {
     private final String OMDBAPIKEY = System.getenv("APIKEY_OMDB");
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
     private final String API = "&apikey=" + OMDBAPIKEY;
+    private final ListaRepository listaRepository;
+
+    public Principal(ListaRepository listaRepository) {
+        this.listaRepository = listaRepository;
+    }
 
     public void exibeMenu() {
         System.out.print("Digite o nome do Filme: ");
@@ -37,13 +48,15 @@ public class Principal {
             } else if (dadosFilmes.resposta().equals("False")) {
                 System.out.println("Esse filme não pode ser encontrado");
             }
-        escolhaLista();
+        Filme filme = new Filme(dadosFilmes);
+        filme.setTitulo(dadosFilmes.titulo());
+        filme.setGenero(genero.getGeneroPtBr());
+        escolhaLista(filme);
     }
 
     public void verificaResp() {
         System.out.println("Quer procurar outro filme (S/N)?");
         String resp = scanner.nextLine();
-
         if (resp.equals("S")) {
             exibeMenu();
         } else if (resp.equals("N")){
@@ -53,17 +66,19 @@ public class Principal {
         }
     }
 
-    public void escolhaLista() {
+    public void escolhaLista(Filme filme) {
         System.out.println("Você quer adicionar esse filme a sua lista? (S/N)");
         String resp = scanner.nextLine();
         if (resp.equals("S")) {
+            Lista lista = new Lista(filme);
+            listaRepository.save(lista);
             System.out.println("Filme adicionado na lista!");
             verificaResp();
         } else if (resp.equals("N")) {
-            System.out.println("O filme não foi adicionado!");
             verificaResp();
+            System.out.println("O filme não foi adicionado!");
         } else {
-            escolhaLista();
+            escolhaLista(filme);
         }
     }
 }

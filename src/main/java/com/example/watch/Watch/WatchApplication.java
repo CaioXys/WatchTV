@@ -8,14 +8,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class WatchApplication implements CommandLineRunner {
+    private final Principal principal;
 
-	public static void main(String[] args) {
-		SpringApplication.run(WatchApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(WatchApplication.class, args);
+    }
 
-		@Override
-		public void run(String... args) throws Exception {
-			Principal principal = new Principal();
-			principal.exibeMenu();
-		}
+    public WatchApplication(Principal principal) {
+        this.principal = principal;
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        principal.exibeMenu();
+    }
 }
