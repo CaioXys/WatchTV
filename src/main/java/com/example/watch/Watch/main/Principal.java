@@ -17,10 +17,9 @@ public class Principal {
     private Scanner scanner = new Scanner(System.in);
     private ApiService apiService = new ApiService();
     private ConverteDados conversor = new ConverteDados();
-
     private final String OMDBAPIKEY = System.getenv("APIKEY_OMDB");
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
-    private final String API = "&apikey=" + OMDBAPIKEY;
+    private final String API = "&apikey=" + OMDBAPIKEY + "&type=movie";
     private final ListaRepository listaRepository;
 
     public Principal(ListaRepository listaRepository) {
@@ -75,8 +74,8 @@ public class Principal {
             System.out.println("Filme adicionado na lista!");
             verificaResp();
         } else if (resp.equals("N")) {
-            verificaResp();
             System.out.println("O filme não foi adicionado!");
+            verificaResp();
         } else {
             escolhaLista(filme);
         }
