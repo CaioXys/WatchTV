@@ -6,14 +6,13 @@ import com.example.watch.Watch.model.Genero;
 import com.example.watch.Watch.model.Lista;
 import com.example.watch.Watch.repository.ListaRepository;
 import com.example.watch.Watch.services.ApiService;
-import com.example.watch.Watch.services.ConsultaGemini;
 import com.example.watch.Watch.services.ConverteDados;
 import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
 @Component
-public class Principal {
+public class PrincipalFilme {
     private Scanner scanner = new Scanner(System.in);
     private ApiService apiService = new ApiService();
     private ConverteDados conversor = new ConverteDados();
@@ -22,7 +21,7 @@ public class Principal {
     private final String API = "&apikey=" + OMDBAPIKEY + "&type=movie";
     private final ListaRepository listaRepository;
 
-    public Principal(ListaRepository listaRepository) {
+    public PrincipalFilme(ListaRepository listaRepository) {
         this.listaRepository = listaRepository;
     }
 
@@ -54,7 +53,7 @@ public class Principal {
     }
 
     public void verificaResp() {
-        System.out.println("Quer procurar outro filme (S/N)?");
+        System.out.println("\nQuer procurar outro filme (S/N)?");
         String resp = scanner.nextLine();
         if (resp.equals("S")) {
             exibeMenu();
@@ -66,7 +65,7 @@ public class Principal {
     }
 
     public void escolhaLista(Filme filme) {
-        System.out.println("Você quer adicionar esse filme a sua lista? (S/N)");
+        System.out.println("\nVocê quer adicionar esse filme a sua lista? (S/N)");
         String resp = scanner.nextLine();
         if (resp.equals("S")) {
             Lista lista = new Lista(filme);
