@@ -13,16 +13,18 @@ import java.util.Scanner;
 
 @Component
 public class PrincipalFilme {
+    private final PrincipalEscolha principalEscolha;
     private Scanner scanner = new Scanner(System.in);
     private ApiService apiService = new ApiService();
     private ConverteDados conversor = new ConverteDados();
-    private final String OMDBAPIKEY = System.getenv("APIKEY_OMDB");
+    private final String OMDBAPIKEY = System.getenv("q");
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
     private final String API = "&apikey=" + OMDBAPIKEY + "&type=movie";
     private final ListaRepository listaRepository;
 
-    public PrincipalFilme(ListaRepository listaRepository) {
+    public PrincipalFilme(ListaRepository listaRepository, PrincipalEscolha principalEscolha) {
         this.listaRepository = listaRepository;
+        this.principalEscolha = principalEscolha;
     }
 
     public void exibeMenu() {
@@ -59,6 +61,7 @@ public class PrincipalFilme {
             exibeMenu();
         } else if (resp.equals("N")){
             System.out.println("Saindo!");
+            principalEscolha.escolhaNumero();
         } else {
             verificaResp();
         }
