@@ -1,9 +1,6 @@
 package com.example.watch.Watch.main;
 
-import com.example.watch.Watch.model.DadosFilmes;
-import com.example.watch.Watch.model.Filme;
-import com.example.watch.Watch.model.Genero;
-import com.example.watch.Watch.model.Lista;
+import com.example.watch.Watch.model.*;
 import com.example.watch.Watch.repository.ListaRepository;
 import com.example.watch.Watch.services.ApiService;
 import com.example.watch.Watch.services.ConverteDados;
@@ -13,6 +10,7 @@ import java.util.Scanner;
 
 @Component
 public class PrincipalSerie {
+    private final PrincipalEscolha principalEscolha;
     private Scanner scanner = new Scanner(System.in);
     private ApiService apiService = new ApiService();
     private ConverteDados conversor = new ConverteDados();
@@ -21,15 +19,16 @@ public class PrincipalSerie {
     private final String API = "&apikey=" + OMDBAPIKEY + "&type=series";
     private final ListaRepository listaRepository;
 
-    public PrincipalSerie(ListaRepository listaRepository) {
+    public PrincipalSerie(ListaRepository listaRepository, PrincipalEscolha principalEscolha) {
         this.listaRepository = listaRepository;
+        this.principalEscolha = principalEscolha;
     }
 
     public void exibeMenu() {
         System.out.print("Digite o nome da série: ");
         var titulo = scanner.nextLine();
         var json = apiService.obterDados(ENDERECO + titulo.replace(" ", "+") + API);
-        DadosFilmes dadosSeries = conversor.obterDados(json, DadosFilmes.class);
+        DadosSeries dadosSeries = conversor.obterDados(json, DadosSeries.class);
 
         String generoIngles = dadosSeries.genero().split(",")[0].trim(); // .split(",")[0].trim() pega o primeiro
         Genero genero = Genero.fromApi(generoIngles);
@@ -41,42 +40,43 @@ public class PrincipalSerie {
                 System.out.println("Data de lançamento: " + dadosSeries.lancamento());
                 System.out.println("Duração: " + dadosSeries.duracao());
                 System.out.println("Avaliação: " + dadosSeries.avaliacao());
-//                System.out.println("Sinopse: " + ConsultaGemini.obterTraducao(dadosFilmes.sinopse()).trim());
+//                System.out.println("Sinopse: " + ConsultaGemini.obterTraducao(dadosSeries.sinopse()).trim());
                 System.out.println("------------------------------");
             } else if (dadosSeries.resposta().equals("False")) {
-                System.out.println("Esse filme não pode ser encontrado");
+                System.out.println("Essa série não pode ser encontrada");
             }
-        Filme filme = new Filme(dadosSeries);
-        filme.setTitulo(dadosSeries.titulo());
-        filme.setGenero(genero.getGeneroPtBr());
-        escolhaLista(filme);
+        Serie serie = new Serie(dadosSeries);
+        serie.setTitulo(dadosSeries.titulo());
+        serie.setGenero(genero.getGeneroPtBr());
+        escolhaLista(serie);
     }
 
     public void verificaResp() {
-        System.out.println("\nQuer procurar outro filme (S/N)?");
+        System.out.println("\nQuer procurar outra série? (S/N)");
         String resp = scanner.nextLine();
         if (resp.equals("S")) {
             exibeMenu();
         } else if (resp.equals("N")){
             System.out.println("Saindo!");
+            principalEscolha.escolhaNumero();
         } else {
             verificaResp();
         }
     }
 
-    public void escolhaLista(Filme filme) {
-        System.out.println("\nVocê quer adicionar esse filme a sua lista? (S/N)");
+    public void escolhaLista(Serie serie) {
+        System.out.println("\nVocê quer adicionar essa série a sua lista? (S/N)");
         String resp = scanner.nextLine();
         if (resp.equals("S")) {
-            Lista lista = new Lista(filme);
+            Lista lista = new Lista(serie);
             listaRepository.save(lista);
-            System.out.println("Filme adicionado na lista!");
+            System.out.println("Série adicionado na lista!");
             verificaResp();
         } else if (resp.equals("N")) {
-            System.out.println("O filme não foi adicionado!");
+            System.out.println("A série não foi adicionado!");
             verificaResp();
         } else {
-            escolhaLista(filme);
+            escolhaLista(serie);
         }
     }
 }
