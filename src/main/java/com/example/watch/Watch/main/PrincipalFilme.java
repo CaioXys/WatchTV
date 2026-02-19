@@ -13,28 +13,28 @@ import java.util.Scanner;
 
 @Component
 public class PrincipalFilme {
-    private final PrincipalEscolha principalEscolha;
     private Scanner scanner = new Scanner(System.in);
     private ApiService apiService = new ApiService();
     private ConverteDados conversor = new ConverteDados();
-    private final String OMDBAPIKEY = System.getenv("q");
+    private final String OMDBAPIKEY = System.getenv("APIKEY_OMDB");
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
     private final String API = "&apikey=" + OMDBAPIKEY + "&type=movie";
     private final ListaRepository listaRepository;
 
-    public PrincipalFilme(ListaRepository listaRepository, PrincipalEscolha principalEscolha) {
+    public PrincipalFilme(ListaRepository listaRepository) {
         this.listaRepository = listaRepository;
-        this.principalEscolha = principalEscolha;
     }
 
     public void exibeMenu() {
-        System.out.print("Digite o nome do Filme: ");
-        var titulo = scanner.nextLine();
-        var json = apiService.obterDados(ENDERECO + titulo.replace(" ", "+") + API);
-        DadosFilmes dadosFilmes = conversor.obterDados(json, DadosFilmes.class);
+        boolean continuar = true;
+        while (continuar) {
+            System.out.print("Digite o nome do Filme: ");
+            var titulo = scanner.nextLine();
+            var json = apiService.obterDados(ENDERECO + titulo.replace(" ", "+") + API);
+            DadosFilmes dadosFilmes = conversor.obterDados(json, DadosFilmes.class);
 
-        String generoIngles = dadosFilmes.genero().split(",")[0].trim(); // .split(",")[0].trim() pega o primeiro
-        Genero genero = Genero.fromApi(generoIngles);
+            String generoIngles = dadosFilmes.genero().split(",")[0].trim(); // .split(",")[0].trim() pega o primeiro
+            Genero genero = Genero.fromApi(generoIngles);
 
             if (dadosFilmes.titulo() != null) {
                 System.out.println("------------------------------");
@@ -48,38 +48,39 @@ public class PrincipalFilme {
             } else if (dadosFilmes.resposta().equals("False")) {
                 System.out.println("Esse filme não pode ser encontrado");
             }
-        Filme filme = new Filme(dadosFilmes);
-        filme.setTitulo(dadosFilmes.titulo());
-        filme.setGenero(genero.getGeneroPtBr());
-        escolhaLista(filme);
+            Filme filme = new Filme(dadosFilmes);
+            filme.setTitulo(dadosFilmes.titulo());
+            filme.setTipo(dadosFilmes.tipo());
+            filme.setGenero(genero.getGeneroPtBr());
+            escolhaLista(filme);
+            continuar = verificaResp();
+        }
     }
 
-    public void verificaResp() {
-        System.out.println("\nQuer procurar outro filme (S/N)?");
-        String resp = scanner.nextLine();
-        if (resp.equals("S")) {
-            exibeMenu();
-        } else if (resp.equals("N")){
-            System.out.println("Saindo!");
-            principalEscolha.escolhaNumero();
-        } else {
-            verificaResp();
+    public boolean verificaResp() {
+        while (true) {
+            System.out.println("\nQuer procurar outro filme (S/N)?");
+            String resp = scanner.nextLine();
+            if (resp.equalsIgnoreCase("S")) return true;
+            if (resp.equalsIgnoreCase("N")) return false;
+            System.out.println("Opção inválida!");
         }
     }
 
     public void escolhaLista(Filme filme) {
-        System.out.println("\nVocê quer adicionar esse filme a sua lista? (S/N)");
-        String resp = scanner.nextLine();
-        if (resp.equals("S")) {
-            Lista lista = new Lista(filme);
-            listaRepository.save(lista);
-            System.out.println("Filme adicionado na lista!");
-            verificaResp();
-        } else if (resp.equals("N")) {
-            System.out.println("O filme não foi adicionado!");
-            verificaResp();
-        } else {
-            escolhaLista(filme);
+        while (true) {
+            System.out.println("\nVocê quer adicionar esse filme à sua lista? (S/N)");
+            String resp = scanner.nextLine();
+            if (resp.equalsIgnoreCase("S")) {
+                listaRepository.save(new Lista(filme));
+                System.out.println("Filme adicionada!");
+                return;
+            }
+            if (resp.equalsIgnoreCase("N")) {
+                System.out.println("O filme não foi adicionada!");
+                return;
+            }
+            System.out.println("Opção inválida!");
         }
     }
 }

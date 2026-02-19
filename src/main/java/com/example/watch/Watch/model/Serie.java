@@ -15,7 +15,6 @@ public class Serie {
     private String genero;
     private Integer temporadas;
     private LocalDate lancamento;
-    private String duracao;
     private Double avaliacao;
     private String tipo;
 
