@@ -10,7 +10,6 @@ import java.util.Scanner;
 
 @Component
 public class PrincipalSerie {
-    private final PrincipalEscolha principalEscolha;
     private Scanner scanner = new Scanner(System.in);
     private ApiService apiService = new ApiService();
     private ConverteDados conversor = new ConverteDados();
@@ -19,64 +18,66 @@ public class PrincipalSerie {
     private final String API = "&apikey=" + OMDBAPIKEY + "&type=series";
     private final ListaRepository listaRepository;
 
-    public PrincipalSerie(ListaRepository listaRepository, PrincipalEscolha principalEscolha) {
+    public PrincipalSerie(ListaRepository listaRepository) {
         this.listaRepository = listaRepository;
-        this.principalEscolha = principalEscolha;
     }
 
     public void exibeMenu() {
-        System.out.print("Digite o nome da série: ");
-        var titulo = scanner.nextLine();
-        var json = apiService.obterDados(ENDERECO + titulo.replace(" ", "+") + API);
-        DadosSeries dadosSeries = conversor.obterDados(json, DadosSeries.class);
+        boolean continuar = true;
+        while (continuar) {
+            System.out.print("Digite o nome da série: ");
+            var titulo = scanner.nextLine();
+            var json = apiService.obterDados(ENDERECO + titulo.replace(" ", "+") + API);
+            DadosSeries dadosSeries = conversor.obterDados(json, DadosSeries.class);
 
-        String generoIngles = dadosSeries.genero().split(",")[0].trim(); // .split(",")[0].trim() pega o primeiro
-        Genero genero = Genero.fromApi(generoIngles);
+            String generoIngles = dadosSeries.genero().split(",")[0].trim(); // .split(",")[0].trim() pega o primeiro
+            Genero genero = Genero.fromApi(generoIngles);
 
             if (dadosSeries.titulo() != null) {
                 System.out.println("------------------------------");
                 System.out.println("Título: " + dadosSeries.titulo());
                 System.out.println("Gênero: " + genero.getGeneroPtBr());
                 System.out.println("Data de lançamento: " + dadosSeries.lancamento());
-                System.out.println("Duração: " + dadosSeries.duracao());
+                System.out.println("Temporadas: " + dadosSeries.temporadas());
                 System.out.println("Avaliação: " + dadosSeries.avaliacao());
 //                System.out.println("Sinopse: " + ConsultaGemini.obterTraducao(dadosSeries.sinopse()).trim());
                 System.out.println("------------------------------");
             } else if (dadosSeries.resposta().equals("False")) {
                 System.out.println("Essa série não pode ser encontrada");
             }
-        Serie serie = new Serie(dadosSeries);
-        serie.setTitulo(dadosSeries.titulo());
-        serie.setGenero(genero.getGeneroPtBr());
-        escolhaLista(serie);
+            Serie serie = new Serie(dadosSeries);
+            serie.setTitulo(dadosSeries.titulo());
+            serie.setTipo(dadosSeries.tipo());
+            serie.setGenero(genero.getGeneroPtBr());
+            escolhaLista(serie);
+            continuar = verificaResp();
+        }
     }
 
-    public void verificaResp() {
-        System.out.println("\nQuer procurar outra série? (S/N)");
-        String resp = scanner.nextLine();
-        if (resp.equals("S")) {
-            exibeMenu();
-        } else if (resp.equals("N")){
-            System.out.println("Saindo!");
-            principalEscolha.escolhaNumero();
-        } else {
-            verificaResp();
+    public boolean verificaResp() {
+        while (true) {
+            System.out.println("\nQuer procurar outra série? (S/N)");
+            String resp = scanner.nextLine();
+            if (resp.equalsIgnoreCase("S")) return true;
+            if (resp.equalsIgnoreCase("N")) return false;
+            System.out.println("Opção inválida!");
         }
     }
 
     public void escolhaLista(Serie serie) {
-        System.out.println("\nVocê quer adicionar essa série a sua lista? (S/N)");
-        String resp = scanner.nextLine();
-        if (resp.equals("S")) {
-            Lista lista = new Lista(serie);
-            listaRepository.save(lista);
-            System.out.println("Série adicionado na lista!");
-            verificaResp();
-        } else if (resp.equals("N")) {
-            System.out.println("A série não foi adicionado!");
-            verificaResp();
-        } else {
-            escolhaLista(serie);
+        while (true) {
+            System.out.println("\nVocê quer adicionar essa série à sua lista? (S/N)");
+            String resp = scanner.nextLine();
+            if (resp.equalsIgnoreCase("S")) {
+                listaRepository.save(new Lista(serie));
+                System.out.println("Série adicionada!");
+                return;
+            }
+            if (resp.equalsIgnoreCase("N")) {
+                System.out.println("A série não foi adicionada!");
+                return;
+            }
+            System.out.println("Opção inválida!");
         }
     }
 }
