@@ -1,11 +1,9 @@
 package com.example.watch.Watch.main;
 
-import com.example.watch.Watch.model.DadosFilmes;
-import com.example.watch.Watch.model.Filme;
-import com.example.watch.Watch.model.Genero;
-import com.example.watch.Watch.model.Lista;
+import com.example.watch.Watch.model.*;
 import com.example.watch.Watch.repository.ListaRepository;
 import com.example.watch.Watch.services.ApiService;
+import com.example.watch.Watch.services.ConsultaGemini;
 import com.example.watch.Watch.services.ConverteDados;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +18,6 @@ public class PrincipalFilme {
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
     private final String API = "&apikey=" + OMDBAPIKEY + "&type=movie";
     private final ListaRepository listaRepository;
-
     public PrincipalFilme(ListaRepository listaRepository) {
         this.listaRepository = listaRepository;
     }
@@ -35,6 +32,7 @@ public class PrincipalFilme {
 
             String generoIngles = dadosFilmes.genero().split(",")[0].trim(); // .split(",")[0].trim() pega o primeiro
             Genero genero = Genero.fromApi(generoIngles);
+            Tipo tipo = Tipo.fromApi(dadosFilmes.tipo());
 
             if (dadosFilmes.titulo() != null) {
                 System.out.println("------------------------------");
@@ -50,7 +48,7 @@ public class PrincipalFilme {
             }
             Filme filme = new Filme(dadosFilmes);
             filme.setTitulo(dadosFilmes.titulo());
-            filme.setTipo(dadosFilmes.tipo());
+            filme.setTipo(tipo.getTipoPtBr());
             filme.setGenero(genero.getGeneroPtBr());
             escolhaLista(filme);
             continuar = verificaResp();
@@ -73,14 +71,14 @@ public class PrincipalFilme {
             String resp = scanner.nextLine();
             if (resp.equalsIgnoreCase("S")) {
                 listaRepository.save(new Lista(filme));
-                System.out.println("Filme adicionada!");
+                System.out.println("Filme adicionado!");
                 return;
-            }
-            if (resp.equalsIgnoreCase("N")) {
-                System.out.println("O filme não foi adicionada!");
+            } else if (resp.equalsIgnoreCase("N")) {
+                System.out.println("O filme não foi adicionado!");
                 return;
+            } else {
+                System.out.println("Opção inválida!");
             }
-            System.out.println("Opção inválida!");
         }
     }
 }

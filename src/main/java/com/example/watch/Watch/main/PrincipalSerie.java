@@ -3,6 +3,7 @@ package com.example.watch.Watch.main;
 import com.example.watch.Watch.model.*;
 import com.example.watch.Watch.repository.ListaRepository;
 import com.example.watch.Watch.services.ApiService;
+import com.example.watch.Watch.services.ConsultaGemini;
 import com.example.watch.Watch.services.ConverteDados;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +33,7 @@ public class PrincipalSerie {
 
             String generoIngles = dadosSeries.genero().split(",")[0].trim(); // .split(",")[0].trim() pega o primeiro
             Genero genero = Genero.fromApi(generoIngles);
+            Tipo tipo = Tipo.fromApi(dadosSeries.tipo());
 
             if (dadosSeries.titulo() != null) {
                 System.out.println("------------------------------");
@@ -47,7 +49,7 @@ public class PrincipalSerie {
             }
             Serie serie = new Serie(dadosSeries);
             serie.setTitulo(dadosSeries.titulo());
-            serie.setTipo(dadosSeries.tipo());
+            serie.setTipo(tipo.getTipoPtBr());
             serie.setGenero(genero.getGeneroPtBr());
             escolhaLista(serie);
             continuar = verificaResp();
@@ -72,12 +74,12 @@ public class PrincipalSerie {
                 listaRepository.save(new Lista(serie));
                 System.out.println("Série adicionada!");
                 return;
-            }
-            if (resp.equalsIgnoreCase("N")) {
+            } else if (resp.equalsIgnoreCase("N")) {
                 System.out.println("A série não foi adicionada!");
                 return;
+            } else {
+                System.out.println("Opção inválida!");
             }
-            System.out.println("Opção inválida!");
         }
     }
 }
