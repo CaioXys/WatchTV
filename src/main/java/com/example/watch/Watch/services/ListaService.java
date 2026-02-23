@@ -17,7 +17,8 @@ public class ListaService {
 
     public void exibeLista() {
         boolean exit = true;
-        while (exit) {
+        boolean exitTwo = true;
+        while (exit && exitTwo) {
             List<Lista> favoritos = listaRepository.findAll();
 
             if (favoritos.isEmpty()) {
@@ -26,12 +27,32 @@ public class ListaService {
             }
 
             favoritos.forEach(f -> {
+                System.out.println("Posição: " + f.getId());
                 System.out.println("Título: " + f.getTitulo());
                 System.out.println("Gênero: " + f.getGenero());
                 System.out.println("Tipo: " + f.getTipo());
                 System.out.println("--------------------");
             });
+            exitTwo = excluirFavorito();
             exit = verificaLista();
+        }
+    }
+
+    public boolean excluirFavorito() {
+        while(true) {
+            System.out.println("Você quer excluir algum filme ou série da lista (S/N)?");
+            var resp = scanner.nextLine();
+            if (resp.equalsIgnoreCase("S")) {
+                System.out.print("Digite a posição: ");
+                var respId = scanner.nextInt();
+                scanner.nextLine();
+                listaRepository.deleteById((long) respId);
+                System.out.println("Filme removido!");
+            } else if (resp.equalsIgnoreCase("N")) {
+                return false;
+            } else {
+                System.out.println("Opção inválida!");
+            }
         }
     }
 
