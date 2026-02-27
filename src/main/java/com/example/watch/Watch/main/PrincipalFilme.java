@@ -7,6 +7,7 @@ import com.example.watch.Watch.services.ConsultaGemini;
 import com.example.watch.Watch.services.ConverteDados;
 import org.springframework.stereotype.Component;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 @Component
@@ -14,10 +15,12 @@ public class PrincipalFilme {
     private Scanner scanner = new Scanner(System.in);
     private ApiService apiService = new ApiService();
     private ConverteDados conversor = new ConverteDados();
+
     private final String OMDBAPIKEY = System.getenv("APIKEY_OMDB");
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
     private final String API = "&apikey=" + OMDBAPIKEY + "&type=movie";
     private final ListaRepository listaRepository;
+
     public PrincipalFilme(ListaRepository listaRepository) {
         this.listaRepository = listaRepository;
     }
@@ -35,10 +38,15 @@ public class PrincipalFilme {
             Tipo tipo = Tipo.fromApi(dadosFilmes.tipo());
 
             if (dadosFilmes.titulo() != null) {
+                Filme filme = new Filme(dadosFilmes);
+                String data = dadosFilmes.lancamento() != null
+                        ? filme.getLancamento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                        : "Data indisponível.";
+
                 System.out.println("------------------------------");
                 System.out.println("-> Título: " + dadosFilmes.titulo());
                 System.out.println("-> Gênero: " + genero.getGeneroPtBr());
-                System.out.println("-> Data de lançamento: " + dadosFilmes.lancamento());
+                System.out.println("-> Data de lançamento: " + data);
                 System.out.println("-> Duração: " + dadosFilmes.duracao());
                 System.out.println("-> Avaliação: " + dadosFilmes.avaliacao());
 //                System.out.println("Sinopse: " + ConsultaGemini.obterTraducao(dadosFilmes.sinopse()).trim());

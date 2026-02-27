@@ -7,6 +7,7 @@ import com.example.watch.Watch.services.ConsultaGemini;
 import com.example.watch.Watch.services.ConverteDados;
 import org.springframework.stereotype.Component;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 @Component
@@ -36,10 +37,15 @@ public class PrincipalSerie {
             Tipo tipo = Tipo.fromApi(dadosSeries.tipo());
 
             if (dadosSeries.titulo() != null) {
+                Serie serie = new Serie(dadosSeries);
+                String data = dadosSeries.lancamento() != null
+                        ? serie.getLancamento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                        : "Data indisponível.";
+
                 System.out.println("------------------------------");
                 System.out.println("-> Título: " + dadosSeries.titulo());
                 System.out.println("-> Gênero: " + genero.getGeneroPtBr());
-                System.out.println("-> Data de lançamento: " + dadosSeries.lancamento());
+                System.out.println("-> Data de lançamento: " + data);
                 System.out.println("-> Temporadas: " + dadosSeries.temporadas());
                 System.out.println("-> Avaliação: " + dadosSeries.avaliacao());
 //                System.out.println("Sinopse: " + ConsultaGemini.obterTraducao(dadosSeries.sinopse()).trim());
