@@ -26,7 +26,7 @@ public class PrincipalSerie {
     public void exibeMenu() {
         boolean continuar = true;
         while (continuar) {
-            System.out.print("Digite o nome da série: ");
+            System.out.print(">> Digite o nome da série: ");
             var titulo = scanner.nextLine();
             var json = apiService.obterDados(ENDERECO + titulo.replace(" ", "+") + API);
             DadosSeries dadosSeries = conversor.obterDados(json, DadosSeries.class);
@@ -37,15 +37,15 @@ public class PrincipalSerie {
 
             if (dadosSeries.titulo() != null) {
                 System.out.println("------------------------------");
-                System.out.println("Título: " + dadosSeries.titulo());
-                System.out.println("Gênero: " + genero.getGeneroPtBr());
-                System.out.println("Data de lançamento: " + dadosSeries.lancamento());
-                System.out.println("Temporadas: " + dadosSeries.temporadas());
-                System.out.println("Avaliação: " + dadosSeries.avaliacao());
+                System.out.println("-> Título: " + dadosSeries.titulo());
+                System.out.println("-> Gênero: " + genero.getGeneroPtBr());
+                System.out.println("-> Data de lançamento: " + dadosSeries.lancamento());
+                System.out.println("-> Temporadas: " + dadosSeries.temporadas());
+                System.out.println("-> Avaliação: " + dadosSeries.avaliacao());
 //                System.out.println("Sinopse: " + ConsultaGemini.obterTraducao(dadosSeries.sinopse()).trim());
                 System.out.println("------------------------------");
             } else if (dadosSeries.resposta().equals("False")) {
-                System.out.println("Essa série não pode ser encontrada");
+                System.out.println("--Essa série não pode ser encontrada.--");
             }
             Serie serie = new Serie(dadosSeries);
             serie.setTitulo(dadosSeries.titulo());
@@ -58,27 +58,27 @@ public class PrincipalSerie {
 
     public boolean verificaResp() {
         while (true) {
-            System.out.println("\nQuer procurar outra série? (S/N)");
+            System.out.println("\n>> Quer procurar outra série? (S/N)");
             String resp = scanner.nextLine();
             if (resp.equalsIgnoreCase("S")) return true;
             if (resp.equalsIgnoreCase("N")) return false;
-            System.out.println("Opção inválida!");
+            System.out.println("--Opção inválida!--");
         }
     }
 
     public void escolhaLista(Serie serie) {
         while (true) {
-            System.out.println("\nVocê quer adicionar essa série à sua lista? (S/N)");
+            System.out.println("\n>> Você quer adicionar essa série à sua lista? (S/N)");
             String resp = scanner.nextLine();
             if (resp.equalsIgnoreCase("S")) {
                 listaRepository.save(new Lista(serie));
-                System.out.println("Série adicionada!");
+                System.out.println("--Série adicionada!--");
                 return;
             } else if (resp.equalsIgnoreCase("N")) {
-                System.out.println("A série não foi adicionada!");
+                System.out.println("--A série não foi adicionada!--");
                 return;
             } else {
-                System.out.println("Opção inválida!");
+                System.out.println("--Opção inválida!--");
             }
         }
     }

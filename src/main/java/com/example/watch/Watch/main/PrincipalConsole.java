@@ -22,12 +22,12 @@ public class PrincipalConsole {
     public void escolhaNumero() {
         while (true) {
             System.out.println("\n----------------------------");
-            System.out.println("1 - Buscar filmes");
-            System.out.println("2 - Buscar séries");
-            System.out.println("3 - Mostrar lista de favoritos");
-            System.out.println("4 - Sair");
+            System.out.println("1🎥 - Buscar filmes");
+            System.out.println("2📺 - Buscar séries");
+            System.out.println("3🧾 - Mostrar lista de favoritos");
+            System.out.println("4❌ - Sair");
             System.out.println("----------------------------");
-            System.out.print("Digite um número para busca: ");
+            System.out.print(">> Digite um número para busca: ");
             var resp = Integer.parseInt(scanner.nextLine());
 
             switch (resp) {
@@ -41,10 +41,10 @@ public class PrincipalConsole {
                     listaService.exibeLista();
                     break;
                 case 4:
-                    System.out.println("Saindo...");
+                    System.out.println("--Saindo--");
                     return;
                 default:
-                    System.out.println("\nOpção inválida!");
+                    System.out.println("\n--Opção inválida!--");
                     break;
             }
         }
