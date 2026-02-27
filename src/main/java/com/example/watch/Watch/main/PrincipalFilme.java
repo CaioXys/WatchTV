@@ -25,7 +25,7 @@ public class PrincipalFilme {
     public void exibeMenu() {
         boolean continuar = true;
         while (continuar) {
-            System.out.print("Digite o nome do Filme: ");
+            System.out.print(">> Digite o nome do Filme: ");
             var titulo = scanner.nextLine();
             var json = apiService.obterDados(ENDERECO + titulo.replace(" ", "+") + API);
             DadosFilmes dadosFilmes = conversor.obterDados(json, DadosFilmes.class);
@@ -36,15 +36,15 @@ public class PrincipalFilme {
 
             if (dadosFilmes.titulo() != null) {
                 System.out.println("------------------------------");
-                System.out.println("Título: " + dadosFilmes.titulo());
-                System.out.println("Gênero: " + genero.getGeneroPtBr());
-                System.out.println("Data de lançamento: " + dadosFilmes.lancamento());
-                System.out.println("Duração: " + dadosFilmes.duracao());
-                System.out.println("Avaliação: " + dadosFilmes.avaliacao());
+                System.out.println("-> Título: " + dadosFilmes.titulo());
+                System.out.println("-> Gênero: " + genero.getGeneroPtBr());
+                System.out.println("-> Data de lançamento: " + dadosFilmes.lancamento());
+                System.out.println("-> Duração: " + dadosFilmes.duracao());
+                System.out.println("-> Avaliação: " + dadosFilmes.avaliacao());
 //                System.out.println("Sinopse: " + ConsultaGemini.obterTraducao(dadosFilmes.sinopse()).trim());
                 System.out.println("------------------------------");
             } else if (dadosFilmes.resposta().equals("False")) {
-                System.out.println("Esse filme não pode ser encontrado");
+                System.out.println("--Esse filme não pode ser encontrado.--");
             }
             Filme filme = new Filme(dadosFilmes);
             filme.setTitulo(dadosFilmes.titulo());
@@ -57,27 +57,32 @@ public class PrincipalFilme {
 
     public boolean verificaResp() {
         while (true) {
-            System.out.println("\nQuer procurar outro filme (S/N)?");
+            System.out.println("\n>> Quer procurar outro filme (S/N)?");
             String resp = scanner.nextLine();
             if (resp.equalsIgnoreCase("S")) return true;
             if (resp.equalsIgnoreCase("N")) return false;
-            System.out.println("Opção inválida!");
+            System.out.println("--Opção inválida!--");
         }
     }
 
     public void escolhaLista(Filme filme) {
         while (true) {
-            System.out.println("\nVocê quer adicionar esse filme à sua lista? (S/N)");
+            System.out.println("\n>> Você quer adicionar esse filme à sua lista (S/N)?");
             String resp = scanner.nextLine();
-            if (resp.equalsIgnoreCase("S")) {
-                listaRepository.save(new Lista(filme));
-                System.out.println("Filme adicionado!");
-                return;
-            } else if (resp.equalsIgnoreCase("N")) {
-                System.out.println("O filme não foi adicionado!");
-                return;
+            if (!listaRepository.existsByTitulo(filme.getTitulo())) {
+                if (resp.equalsIgnoreCase("S")) {
+                    listaRepository.save(new Lista(filme));
+                    System.out.println("\n--Filme adicionado!--");
+                    return;
+                } else if (resp.equalsIgnoreCase("N")) {
+                    System.out.println("\n--O filme não foi adicionado!--");
+                    return;
+                } else {
+                    System.out.println("\n--Opção inválida!--");
+                }
             } else {
-                System.out.println("Opção inválida!");
+                System.out.println("--Esse filme já foi adicionado!--");
+                return;
             }
         }
     }
