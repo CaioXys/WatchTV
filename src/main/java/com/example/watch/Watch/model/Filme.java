@@ -7,6 +7,8 @@ import lombok.ToString;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Getter
 @Setter
@@ -29,7 +31,8 @@ public class Filme {
         }
 
         try {
-            this.lancamento = LocalDate.parse(dadosFilmes.lancamento());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
+            this.lancamento = LocalDate.parse(dadosFilmes.lancamento(), formatter);
         } catch (DateTimeException ex) {
             this.lancamento = null;
         }
