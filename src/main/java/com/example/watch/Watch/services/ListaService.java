@@ -24,7 +24,7 @@ public class ListaService {
             List<Lista> favoritos = listaRepository.findAll();
 
             if (favoritos.isEmpty()) {
-                System.out.println("--Sua lista está vazia!--");
+                System.out.println("\n--Sua lista está vazia!--");
                 return;
             }
 
@@ -43,10 +43,10 @@ public class ListaService {
         while(true) {
             List<Lista> favoritos = listaRepository.findAll();
             if (!favoritos.isEmpty()) {
-                System.out.println(">> Você quer excluir algum filme ou série da lista (S/N)?");
+                System.out.println("\n>> Você quer excluir algum filme ou série da lista (S/N)?");
                 var resp = scanner.nextLine();
                 if (resp.equalsIgnoreCase("S")) {
-                    System.out.print(">> Digite o nome: ");
+                    System.out.print("\n>> Digite o nome: ");
                     var respName = scanner.nextLine();
                     listaRepository.deleteByTitulo(respName);
                     System.out.println("\n--Filme removido!--");
@@ -64,10 +64,10 @@ public class ListaService {
 
     public boolean verificaLista() {
         while (true) {
-            System.out.println(">> Voltar para o menu? (S)");
+            System.out.println("\n>> Voltar para o menu? (S)");
             var resp = scanner.nextLine();
             if (resp.equalsIgnoreCase("S")) return false;
-            System.out.println("--Opção inválida!--");
+            System.out.println("\n--Opção inválida!--");
         }
     }
 }

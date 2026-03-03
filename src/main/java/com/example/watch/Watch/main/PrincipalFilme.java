@@ -52,7 +52,7 @@ public class PrincipalFilme {
 //                System.out.println("Sinopse: " + ConsultaGemini.obterTraducao(dadosFilmes.sinopse()).trim());
                 System.out.println("------------------------------");
             } else if (dadosFilmes.resposta().equals("False")) {
-                System.out.println("--Esse filme não pode ser encontrado.--");
+                System.out.println("\n--Esse filme não pode ser encontrado.--");
             }
             Filme filme = new Filme(dadosFilmes);
             filme.setTitulo(dadosFilmes.titulo());
@@ -89,7 +89,7 @@ public class PrincipalFilme {
                     System.out.println("\n--Opção inválida!--");
                 }
             } else {
-                System.out.println("--Esse filme já foi adicionado!--");
+                System.out.println("\n--Esse filme já foi adicionado!--");
                 return;
             }
         }
