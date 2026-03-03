@@ -41,7 +41,7 @@ public class PrincipalConsole {
                     listaService.exibeLista();
                     break;
                 case 4:
-                    System.out.println("--Saindo--");
+                    System.out.println("\n--Saindo--");
                     return;
                 default:
                     System.out.println("\n--Opção inválida!--");

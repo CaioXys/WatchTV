@@ -42,7 +42,7 @@ public class PrincipalSerie {
                         ? serie.getLancamento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
                         : "Data indisponível.";
 
-                System.out.println("------------------------------");
+                System.out.println("\n------------------------------");
                 System.out.println("-> Título: " + dadosSeries.titulo());
                 System.out.println("-> Gênero: " + genero.getGeneroPtBr());
                 System.out.println("-> Data de lançamento: " + data);
@@ -51,7 +51,7 @@ public class PrincipalSerie {
 //                System.out.println("Sinopse: " + ConsultaGemini.obterTraducao(dadosSeries.sinopse()).trim());
                 System.out.println("------------------------------");
             } else if (dadosSeries.resposta().equals("False")) {
-                System.out.println("--Essa série não pode ser encontrada.--");
+                System.out.println("\n--Essa série não pode ser encontrada.--");
             }
             Serie serie = new Serie(dadosSeries);
             serie.setTitulo(dadosSeries.titulo());
@@ -68,7 +68,7 @@ public class PrincipalSerie {
             String resp = scanner.nextLine();
             if (resp.equalsIgnoreCase("S")) return true;
             if (resp.equalsIgnoreCase("N")) return false;
-            System.out.println("--Opção inválida!--");
+            System.out.println("\n--Opção inválida!--");
         }
     }
 
@@ -81,10 +81,10 @@ public class PrincipalSerie {
                 System.out.println("--Série adicionada!--");
                 return;
             } else if (resp.equalsIgnoreCase("N")) {
-                System.out.println("--A série não foi adicionada!--");
+                System.out.println("\n--A série não foi adicionada!--");
                 return;
             } else {
-                System.out.println("--Opção inválida!--");
+                System.out.println("\n--Opção inválida!--");
             }
         }
     }
