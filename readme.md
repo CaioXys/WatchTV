@@ -75,8 +75,6 @@ O [Google Gemini](https://ai.google.dev/) é utilizado para traduzir as sinopses
 - **Como obter sua chave:** Acesse o [Google AI Studio](https://aistudio.google.com/) e gere uma API Key
 - A variável de ambiente necessária é: `GOOGLE_API_KEY` (lida automaticamente pelo SDK)
 
-> ⚠️ A tradução por IA está **comentada por padrão** no código. Para ativá-la, basta descomentar as linhas referentes ao `ConsultaGemini` em `PrincipalFilme.java` e `PrincipalSerie.java`.
-
 ---
 
 ## ⚙️ Configuração do Ambiente
@@ -207,12 +205,6 @@ src/main/java/com/example/watch/Watch/
 │   └── ConsultaGemini.java       # Integração com Google Gemini AI
 └── WatchApplication.java         # Entry point da aplicação
 ```
-
----
-
-## 🤝 Contribuindo
-
-Contribuições são bem-vindas! Sinta-se à vontade para abrir uma *issue* ou enviar um *pull request*.
 
 ---
 
