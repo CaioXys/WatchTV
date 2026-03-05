@@ -48,7 +48,7 @@ public class PrincipalSerie {
                 System.out.println("-> Data de lançamento: " + data);
                 System.out.println("-> Temporadas: " + dadosSeries.temporadas());
                 System.out.println("-> Avaliação: " + dadosSeries.avaliacao());
-//                System.out.println("Sinopse: " + ConsultaGemini.obterTraducao(dadosSeries.sinopse()).trim());
+                System.out.println("Sinopse: " + ConsultaGemini.obterTraducao(dadosSeries.sinopse()).trim());
                 System.out.println("------------------------------");
             } else if (dadosSeries.resposta().equals("False")) {
                 System.out.println("\n--Essa série não pode ser encontrada.--");
