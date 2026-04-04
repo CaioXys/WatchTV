@@ -19,16 +19,34 @@ public class PrincipalConsole {
         this.principalSerie = principalSerie;
     }
 
+    public static void delay(int ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
     public void escolhaNumero() {
         while (true) {
-            System.out.println("\n----------------------------");
-            System.out.println("1🎥 - Buscar filmes");
-            System.out.println("2📺 - Buscar séries");
-            System.out.println("3🧾 - Mostrar lista de favoritos");
-            System.out.println("4❌ - Sair");
-            System.out.println("----------------------------");
+            String menu = """
+            \n----------------------------
+            1🎥 - Buscar filmes
+            2📺 - Buscar séries
+            3🧾 - Mostrar lista de favoritos
+            4❌ - Sair
+            ----------------------------
+            """;
+            System.out.println(menu);
             System.out.print(">> Digite um número para busca: ");
-            var resp = Integer.parseInt(scanner.nextLine());
+            var entrada = scanner.nextLine();
+
+            if (!entrada.matches("\\d+")) { // Verifica se a entrada não é um número antes de converter
+                System.out.println(">> Apenas dígitos numéricos!");
+                delay(1000);
+                continue;
+            }
+            int resp = Integer.parseInt(entrada);
 
             switch (resp) {
                 case 1:
