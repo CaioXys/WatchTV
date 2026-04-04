@@ -49,7 +49,7 @@ public class PrincipalFilme {
                 System.out.println("-> Data de lançamento: " + data);
                 System.out.println("-> Duração: " + dadosFilmes.duracao());
                 System.out.println("-> Avaliação: " + dadosFilmes.avaliacao());
-                System.out.println("Sinopse: " + ConsultaGemini.obterTraducao(dadosFilmes.sinopse()).trim());
+                System.out.println("-> Sinopse: " + ConsultaGemini.obterTraducao(dadosFilmes.sinopse()).trim());
                 System.out.println("------------------------------");
             } else if (dadosFilmes.resposta().equals("False")) {
                 System.out.println("\n--Esse filme não pode ser encontrado.--");
