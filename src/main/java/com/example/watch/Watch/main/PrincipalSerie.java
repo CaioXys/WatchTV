@@ -48,7 +48,7 @@ public class PrincipalSerie {
                 System.out.println("-> Data de lançamento: " + data);
                 System.out.println("-> Temporadas: " + dadosSeries.temporadas());
                 System.out.println("-> Avaliação: " + dadosSeries.avaliacao());
-                System.out.println("-> Sinopse: " + ConsultaGemini.obterTraducao(dadosSeries.sinopse()).trim());
+                //System.out.println("-> Sinopse: " + ConsultaGemini.obterTraducao(dadosSeries.sinopse()).trim());
                 System.out.println("------------------------------");
             } else if (dadosSeries.resposta().equals("False")) {
                 System.out.println("\n--Essa série não pode ser encontrada.--");
@@ -64,7 +64,7 @@ public class PrincipalSerie {
 
     public boolean verificaResp() {
         while (true) {
-            System.out.println("\n>> Quer procurar outra série? (S/N)");
+            System.out.println("\n>> Quer procurar outra série (S/N)? ");
             String resp = scanner.nextLine();
             if (resp.equalsIgnoreCase("S")) return true;
             if (resp.equalsIgnoreCase("N")) return false;
@@ -73,12 +73,16 @@ public class PrincipalSerie {
     }
 
     public void escolhaLista(Serie serie) {
+        if (listaRepository.existsByTitulo(serie.getTitulo())) {
+            System.out.println("\n--Essa série já está adicionada na lista!--");
+            return;
+        }
         while (true) {
-            System.out.println("\n>> Você quer adicionar essa série à sua lista? (S/N)");
+            System.out.println("\n>> Você quer adicionar essa série à sua lista (S/N)?");
             String resp = scanner.nextLine();
             if (resp.equalsIgnoreCase("S")) {
                 listaRepository.save(new Lista(serie));
-                System.out.println("--Série adicionada!--");
+                System.out.println("\n--Série adicionada!--");
                 return;
             } else if (resp.equalsIgnoreCase("N")) {
                 System.out.println("\n--A série não foi adicionada!--");

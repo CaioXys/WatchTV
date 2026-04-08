@@ -49,7 +49,7 @@ public class PrincipalFilme {
                 System.out.println("-> Data de lançamento: " + data);
                 System.out.println("-> Duração: " + dadosFilmes.duracao());
                 System.out.println("-> Avaliação: " + dadosFilmes.avaliacao());
-                System.out.println("-> Sinopse: " + ConsultaGemini.obterTraducao(dadosFilmes.sinopse()).trim());
+                //System.out.println("-> Sinopse: " + ConsultaGemini.obterTraducao(dadosFilmes.sinopse()).trim());
                 System.out.println("------------------------------");
             } else if (dadosFilmes.resposta().equals("False")) {
                 System.out.println("\n--Esse filme não pode ser encontrado.--");
@@ -69,28 +69,26 @@ public class PrincipalFilme {
             String resp = scanner.nextLine();
             if (resp.equalsIgnoreCase("S")) return true;
             if (resp.equalsIgnoreCase("N")) return false;
-            System.out.println("--Opção inválida!--");
+            System.out.println("\n--Opção inválida!--");
         }
     }
 
     public void escolhaLista(Filme filme) {
+        if (listaRepository.existsByTitulo(filme.getTitulo())) {
+            System.out.println("\n--Esse filme já está adicionada na lista!--");
+        }
         while (true) {
             System.out.println("\n>> Você quer adicionar esse filme à sua lista (S/N)?");
             String resp = scanner.nextLine();
-            if (!listaRepository.existsByTitulo(filme.getTitulo())) {
-                if (resp.equalsIgnoreCase("S")) {
-                    listaRepository.save(new Lista(filme));
-                    System.out.println("\n--Filme adicionado!--");
-                    return;
-                } else if (resp.equalsIgnoreCase("N")) {
-                    System.out.println("\n--O filme não foi adicionado!--");
-                    return;
-                } else {
-                    System.out.println("\n--Opção inválida!--");
-                }
-            } else {
-                System.out.println("\n--Esse filme já foi adicionado!--");
+            if (resp.equalsIgnoreCase("S")) {
+                listaRepository.save(new Lista(filme));
+                System.out.println("\n--Filme adicionado!--");
                 return;
+            } else if (resp.equalsIgnoreCase("N")) {
+                System.out.println("\n--O filme não foi adicionado!--");
+                return;
+            } else {
+                System.out.println("\n--Opção inválida!--");
             }
         }
     }
