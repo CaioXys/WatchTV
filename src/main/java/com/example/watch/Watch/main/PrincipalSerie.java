@@ -75,11 +75,28 @@ public class PrincipalSerie {
     public void escolhaLista(Serie serie) {
         if (listaRepository.existsByTitulo(serie.getTitulo())) {
             System.out.println("\n--Essa série já está adicionada na lista!--");
-            return;
+
+            while (true) {
+                System.out.println("\n>> Deseja excluir (S/N)?");
+                var resp = scanner.nextLine();
+
+                if (resp.equalsIgnoreCase("S")) {
+                    listaRepository.deleteByTitulo(serie.getTitulo());
+                    System.out.println("\n--Série removida!--");
+                    return;
+                } else if (resp.equalsIgnoreCase("N")) {
+                    System.out.println("\n--Nenhuma alteração feita!--");
+                    return;
+                } else {
+                    System.out.println("\n--Opção inválida! Digite S ou N.--");
+                }
+            }
         }
+
         while (true) {
             System.out.println("\n>> Você quer adicionar essa série à sua lista (S/N)?");
             String resp = scanner.nextLine();
+
             if (resp.equalsIgnoreCase("S")) {
                 listaRepository.save(new Lista(serie));
                 System.out.println("\n--Série adicionada!--");
@@ -88,7 +105,7 @@ public class PrincipalSerie {
                 System.out.println("\n--A série não foi adicionada!--");
                 return;
             } else {
-                System.out.println("\n--Opção inválida!--");
+                System.out.println("\n--Opção inválida! Digite S ou N.--");
             }
         }
     }
