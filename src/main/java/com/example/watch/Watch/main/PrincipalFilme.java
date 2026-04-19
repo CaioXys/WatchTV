@@ -75,20 +75,38 @@ public class PrincipalFilme {
 
     public void escolhaLista(Filme filme) {
         if (listaRepository.existsByTitulo(filme.getTitulo())) {
-            System.out.println("\n--Esse filme já está adicionada na lista!--");
-        }
-        while (true) {
-            System.out.println("\n>> Você quer adicionar esse filme à sua lista (S/N)?");
-            String resp = scanner.nextLine();
-            if (resp.equalsIgnoreCase("S")) {
-                listaRepository.save(new Lista(filme));
-                System.out.println("\n--Filme adicionado!--");
-                return;
-            } else if (resp.equalsIgnoreCase("N")) {
-                System.out.println("\n--O filme não foi adicionado!--");
-                return;
-            } else {
-                System.out.println("\n--Opção inválida!--");
+            System.out.println("\n--Esse filme já está adicionado na lista!--");
+
+            while (true) {
+                System.out.println("\n>> Deseja excluir (S/N)?");
+                var resp = scanner.nextLine();
+
+                if (resp.equalsIgnoreCase("S")) {
+                    listaRepository.deleteByTitulo(filme.getTitulo());
+                    System.out.println("\n--Filme removido!--");
+                    return;
+                } else if (resp.equalsIgnoreCase("N")) {
+                    System.out.println("\n--Nenhuma alteração feita!--");
+                    return;
+                } else {
+                    System.out.println("\n--Opção inválida! Digite S ou N.--");
+                }
+            }
+        } else {
+            while (true) {
+                System.out.println("\n>> Você quer adicionar esse filme à sua lista (S/N)?");
+                String resp = scanner.nextLine();
+
+                if (resp.equalsIgnoreCase("S")) {
+                    listaRepository.save(new Lista(filme));
+                    System.out.println("\n--Filme adicionado!--");
+                    return;
+                } else if (resp.equalsIgnoreCase("N")) {
+                    System.out.println("\n--O filme não foi adicionado!--");
+                    return;
+                } else {
+                    System.out.println("\n--Opção inválida! Digite S ou N.--");
+                }
             }
         }
     }
