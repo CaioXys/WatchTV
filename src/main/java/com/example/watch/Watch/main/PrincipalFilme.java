@@ -92,7 +92,6 @@ public class PrincipalFilme {
                     System.out.println("\n--Opção inválida! Digite S ou N.--");
                 }
             }
-<<<<<<< HEAD
         }
 
         while (true) {
@@ -106,25 +105,24 @@ public class PrincipalFilme {
             } else if (resp.equalsIgnoreCase("N")) {
                 System.out.println("\n--O filme não foi adicionado!--");
                 return;
-            } else {
+            } else if (!resp.equalsIgnoreCase("S") || !resp.equalsIgnoreCase("N")) {
                 System.out.println("\n--Opção inválida! Digite S ou N.--");
-=======
-        } else {
-            while (true) {
-                System.out.println("\n>> Você quer adicionar esse filme à sua lista (S/N)?");
-                String resp = scanner.nextLine();
+            } else {
+                while (true) {
+                    System.out.println("\n>> Você quer adicionar esse filme à sua lista (S/N)?");
+                    String respLista = scanner.nextLine();
 
-                if (resp.equalsIgnoreCase("S")) {
-                    listaRepository.save(new Lista(filme));
-                    System.out.println("\n--Filme adicionado!--");
-                    return;
-                } else if (resp.equalsIgnoreCase("N")) {
-                    System.out.println("\n--O filme não foi adicionado!--");
-                    return;
-                } else {
-                    System.out.println("\n--Opção inválida! Digite S ou N.--");
+                    if (respLista.equalsIgnoreCase("S")) {
+                        listaRepository.save(new Lista(filme));
+                        System.out.println("\n--Filme adicionado!--");
+                        return;
+                    } else if (respLista.equalsIgnoreCase("N")) {
+                        System.out.println("\n--O filme não foi adicionado!--");
+                        return;
+                    } else {
+                        System.out.println("\n--Opção inválida! Digite S ou N.--");
+                    }
                 }
->>>>>>> fix/improvement-in-main-class
             }
         }
     }
