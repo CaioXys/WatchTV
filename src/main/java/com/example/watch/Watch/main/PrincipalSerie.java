@@ -91,7 +91,6 @@ public class PrincipalSerie {
                     System.out.println("\n--Opção inválida! Digite S ou N.--");
                 }
             }
-<<<<<<< HEAD
         }
 
         while (true) {
@@ -105,25 +104,24 @@ public class PrincipalSerie {
             } else if (resp.equalsIgnoreCase("N")) {
                 System.out.println("\n--A série não foi adicionada!--");
                 return;
-            } else {
+            } else if (!resp.equalsIgnoreCase("S") || !resp.equalsIgnoreCase("N")) {
                 System.out.println("\n--Opção inválida! Digite S ou N.--");
-=======
-        } else {
-            while (true) {
-                System.out.println("\n>> Você quer adicionar essa série à sua lista (S/N)?");
-                String resp = scanner.nextLine();
+            } else {
+                while (true) {
+                    System.out.println("\n>> Você quer adicionar essa série à sua lista (S/N)?");
+                    String respLista = scanner.nextLine();
 
-                if (resp.equalsIgnoreCase("S")) {
-                    listaRepository.save(new Lista(serie));
-                    System.out.println("\n--Série adicionada!--");
-                    return;
-                } else if (resp.equalsIgnoreCase("N")) {
-                    System.out.println("\n--A série não foi adicionada!--");
-                    return;
-                } else {
-                    System.out.println("\n--Opção inválida! Digite S ou N.--");
+                    if (resp.equalsIgnoreCase("S")) {
+                        listaRepository.save(new Lista(serie));
+                        System.out.println("\n--Série adicionada!--");
+                        return;
+                    } else if (respLista.equalsIgnoreCase("N")) {
+                        System.out.println("\n--A série não foi adicionada!--");
+                        return;
+                    } else {
+                        System.out.println("\n--Opção inválida! Digite S ou N.--");
+                    }
                 }
->>>>>>> fix/improvement-in-main-class
             }
         }
     }
