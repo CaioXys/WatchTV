@@ -5,6 +5,7 @@ import com.example.watch.Watch.repository.ListaRepository;
 import com.example.watch.Watch.services.ApiService;
 import com.example.watch.Watch.services.ConsultaGemini;
 import com.example.watch.Watch.services.ConverteDados;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.time.format.DateTimeFormatter;
@@ -72,7 +73,7 @@ public class PrincipalSerie {
         }
     }
 
-    public void escolhaLista(Serie serie) {
+    public void escolhaLista(@NonNull Serie serie) {
         if (listaRepository.existsByTitulo(serie.getTitulo())) {
             System.out.println("\n--Essa série já está adicionada na lista!--");
 
@@ -91,36 +92,21 @@ public class PrincipalSerie {
                     System.out.println("\n--Opção inválida! Digite S ou N.--");
                 }
             }
-        }
+        } else {
 
-        while (true) {
-            System.out.println("\n>> Você quer adicionar essa série à sua lista (S/N)?");
-            String resp = scanner.nextLine();
+            while (true) {
+                System.out.println("\n>> Você quer adicionar essa série à sua lista (S/N)?");
+                String resp = scanner.nextLine();
 
-            if (resp.equalsIgnoreCase("S")) {
-                listaRepository.save(new Lista(serie));
-                System.out.println("\n--Série adicionada!--");
-                return;
-            } else if (resp.equalsIgnoreCase("N")) {
-                System.out.println("\n--A série não foi adicionada!--");
-                return;
-            } else if (!resp.equalsIgnoreCase("S") || !resp.equalsIgnoreCase("N")) {
-                System.out.println("\n--Opção inválida! Digite S ou N.--");
-            } else {
-                while (true) {
-                    System.out.println("\n>> Você quer adicionar essa série à sua lista (S/N)?");
-                    String respLista = scanner.nextLine();
-
-                    if (resp.equalsIgnoreCase("S")) {
-                        listaRepository.save(new Lista(serie));
-                        System.out.println("\n--Série adicionada!--");
-                        return;
-                    } else if (respLista.equalsIgnoreCase("N")) {
-                        System.out.println("\n--A série não foi adicionada!--");
-                        return;
-                    } else {
-                        System.out.println("\n--Opção inválida! Digite S ou N.--");
-                    }
+                if (resp.equalsIgnoreCase("S")) {
+                    listaRepository.save(new Lista(serie));
+                    System.out.println("\n--Série adicionada!--");
+                    return;
+                } else if (resp.equalsIgnoreCase("N")) {
+                    System.out.println("\n--A série não foi adicionada!--");
+                    return;
+                } else {
+                    System.out.println("\n--Opção inválida! Digite S ou N.--");
                 }
             }
         }
